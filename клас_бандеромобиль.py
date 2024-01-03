@@ -22,5 +22,7 @@ print(car1.cars_count)
 car2 = Banderomobil(wheels_count+1, sits+1, guns_count+1 )
 car2.print_info()
 print(car2.cars_count)
+
+print('hello')
         
 
