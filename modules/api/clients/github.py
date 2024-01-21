@@ -31,10 +31,3 @@ class GitHub:
         body = r.json()
 
         return body
-    
-    # 1. get zapros na https://api.github.com/repos/OWNER/REPO/commits
-    # smotret' na search_repo
-    # obiazatel'nye parametry: owner, repo
-    # ?owner={owner}&repo={repo}
-    # owner -> tat-bor-belyaeva-27-06-50, repo -> my_projects
-    # https://api.github.com/repos/tat-bor-belyaeva-27-06-50/my_projects/commits

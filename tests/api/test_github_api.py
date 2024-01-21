@@ -49,3 +49,8 @@ def test_commits_quantity_9(github_api):
 def test_commits_commit_0_author_tatiana_belyaeva(github_api):
     r = github_api.list_commits('tat-bor-belyaeva-27-06-50', 'my_projects')
     assert r[0]['commit']['author']['name'] == 'Tatyana Belyaeva'
+
+@pytest.mark.api
+def test_commits_owner_not_exists(github_api):
+    r = github_api.list_commits('tat-bor-belyaeva-27-07-50', 'my_projects')
+    assert r['message'] == 'Not Found'
