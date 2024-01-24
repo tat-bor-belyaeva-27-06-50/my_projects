@@ -26,6 +26,8 @@ class Database():
         return record
     
     def update_product_qnt_by_id(self, product_id, qnt):
+        if qnt < 0:
+            raise Exception("Quantity should be more than 0.")
         query = f"UPDATE products SET quantity = {qnt} WHERE id = {product_id}"
         self.cursor.execute(query)
         self.connection.commit()
@@ -43,6 +45,11 @@ class Database():
         self.connection.commit()
 
     def delete_product_by_id(self, product_id):
+        query = f"SELECT * FROM products WHERE id = {product_id}"
+        self.cursor.execute(query)
+        existingProduct = self.cursor.fetchall()
+        if len(existingProduct) == 0:
+            raise Exception(f"Can't find the product with id {product_id}")
         query = f"DELETE FROM products WHERE id = {product_id}"
         self.cursor.execute(query)
         self.connection.commit()
@@ -56,3 +63,19 @@ class Database():
         self.cursor.execute(query)
         record = self.cursor.fetchall()
         return record
+    
+    def get_product_by_id(self, product_id):
+        query = f"SELECT * FROM products WHERE id = {product_id}"
+        self.cursor.execute(query)
+        record = self.cursor.fetchall()
+        # print('test')
+        # print(record)
+        return record
+    
+    def insert_order(self, orders_id, customer_id, product_id, order_date):
+        query = f"INSERT INTO orders (id, customer_id, product_id, order_date) \
+            VALUES ({orders_id}, '{customer_id}', '{product_id}', {order_date})"
+        self.cursor.execute(query)
+        self.connection.commit()
+    
+    

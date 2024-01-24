@@ -16,12 +16,12 @@ def test_check_all_users():
 @pytest.mark.database
 def test_check_user_sergii():
     db = Database()
-    user = db.get_user_address_by_name('Sergii')
+    users = db.get_user_address_by_name('Sergii')
 
-    assert user[0][0] == 'Maydan Nezalezhnosti 1'
-    assert user[0][1] == 'Kyiv'
-    assert user[0][2] == '3127'
-    assert user[0][3] == 'Ukraine'
+    assert users[0][0] == 'Maydan Nezalezhnosti 1'
+    assert users[0][1] == 'Kyiv'
+    assert users[0][2] == '3127'
+    assert users[0][3] == 'Ukraine'
 
 @pytest.mark.database
 def test_product_qnt_update():
@@ -61,3 +61,38 @@ def test_detailed_orders():
     assert orders[0][1] == 'Sergii'
     assert orders[0][2] == 'солодка вода'
     assert orders[0][3] == 'з цукром'
+
+@pytest.mark.database
+def test_update_product_qnt_by_id_qnt_less_than_zero():
+    with pytest.raises(Exception):
+        db = Database()
+        db.update_product_qnt_by_id(-1)
+
+@pytest.mark.database
+def test_delete_product_by_id_delete_not_existing_product():
+    with pytest.raises(Exception):
+        db = Database()
+        db.delete_product_by_id(5)
+
+@pytest.mark.database
+def test_get_product_by_id_not_existing_id():
+    db = Database()
+    db.get_product_by_id(5)
+    qnt = db.get_product_by_id(5)
+
+    assert len(qnt) == 0
+
+@pytest.mark.database
+def test_order_insert_product_not_exists():
+    with pytest.raises(Exception):
+        db = Database()
+        db.insert_order(2, 1, -5, '10-10-23')
+
+#DELETE from orders where id <> 1
+
+@pytest.mark.database
+def test_check_user_name_not_exists():
+        db = Database()
+        qnt = db.get_user_address_by_name('Mark')
+
+        assert len(qnt) == 0
