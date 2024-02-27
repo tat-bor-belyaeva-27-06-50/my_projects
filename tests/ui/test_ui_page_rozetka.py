@@ -13,8 +13,6 @@ def test_check_incorrect_username_page_object():
     # виконуємо спробу увійти в систему Rozetka
     sign_in_page.try_login("9999999999")
 
-    time.sleep(5)
-
     # перевіряємо, що на сторінці є повідомлення про помилку
     sign_in_page.check_error_message()
    

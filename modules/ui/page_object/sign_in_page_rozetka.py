@@ -1,6 +1,10 @@
+from typing import KeysView
 from modules.ui.page_object.base_page import BasePage
 from selenium.webdriver.common.by import By
-import time
+from selenium import webdriver
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.keys import Keys
 
 
 class SignInPageRozetka(BasePage):
@@ -13,17 +17,13 @@ class SignInPageRozetka(BasePage):
         self.driver.get(SignInPageRozetka.URL)
 
     def check_error_message(self):
-        login_elem = self.driver.find_element(By.ID, "phone")
-
-        # отримуємо батьківський елемент у login_elem, тому що атрибут class зі значенням 
-        # "validation_type_error" з'являється тільки у батьківського елемента
-        parent_login = login_elem.find_element(By.XPATH, '..')
-
-        # отримуємо атрибут class у батьківського елемента  login_elem
-        classes = parent_login.get_attribute("class")
-
-        # перевіряємо наявність тексту validation_type_error у змінній classes 
-        assert "validation_type_error" in classes       
+        try:
+            WebDriverWait(self.driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, "validation-message")))
+            parent_login = self.driver.find_element(By.CLASS_NAME, 'validation-message')
+        except:
+            parent_login = self.driver.find_element(By.CLASS_NAME, 'error-message')
+            
+        assert parent_login != None   
        
     def try_login(self, username):
         # Знаходимо кнопку відкриття діалогового вікна для входу на сайт
@@ -34,21 +34,18 @@ class SignInPageRozetka(BasePage):
         
         login_btn.click()
 
-        time.sleep(5)
-
-        print('dialog was opened')
-
         # Знаходимо поле, в яке будемо вводити неправильний номер телефону
-        login_elem = self.driver.find_element(By.ID, "phone")
+        try:
+            WebDriverWait(self.driver, 5).until(EC.presence_of_element_located((By.ID, "phone")))
+            login_elem = self.driver.find_element(By.ID, "phone")
+        except:
+            login_elem = self.driver.find_element(By.ID, "auth_email")
 
         # Вводимо неправильний номер користувача
         login_elem.send_keys(username)
 
-        # Знаходимо кнопку продовжити
-        btn_elem = self.driver.find_element(By.CSS_SELECTOR, "[type='submit']")
-
-        # Емулюємо клік лівою кнопкою мишки
-        btn_elem.click()
+        # Натискаємо кнопку TAB на клавіатурі для переходу на інше поле вводу
+        login_elem.send_keys(Keys.TAB)
 
     
 

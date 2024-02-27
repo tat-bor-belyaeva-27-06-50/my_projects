@@ -16,15 +16,11 @@ class SignInPageNovaPoshta(BasePage):
 
         error_attribute = login_elem.get_attribute("aria-invalid")
 
-        print("aria-invalid")
-        print(error_attribute)
-        print("aria-invalid")
         assert error_attribute != None
 
         password_elem = self.driver.find_element(By.NAME, "password")
         error_attribute = password_elem.get_attribute("aria-invalid")
 
-        print(error_attribute)
         assert error_attribute != None
 
     def try_login(self, username, password):
@@ -48,7 +44,7 @@ class SignInPageNovaPoshta(BasePage):
         btn_elem.click()
 
     def check_title(self, expected_title):
-        return self.driver.title == expected_title
+        assert self.driver.title == expected_title
 
     
 
