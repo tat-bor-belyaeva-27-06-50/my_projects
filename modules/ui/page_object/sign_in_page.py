@@ -1,10 +1,13 @@
 from modules.ui.page_object.base_page import BasePage
 from selenium.webdriver.common.by import By
 
-
+# клас SignInPage наслідуваний від класу BasePage
 class SignInPage(BasePage):
     URL = 'https://github.com/login'
 
+# в конструкторі класу викликається конструктор батьківського класу
+# в класі реалізований метод об'єкту try_login, який приймає параметри username і password. Задача цього
+# методу ввести в поле email ім'я користувача, в поле password пароль і натиснути кнопку sign in
     def __init__(self) -> None:
         super().__init__()
 
@@ -30,6 +33,7 @@ class SignInPage(BasePage):
         # Емулюємо клік лівою кнопкою мишки
         btn_elem.click()
 
+    # метод об'єкту check_title перевіряє, чи відповідає заголовок сторінки очікуваному
     def check_title(self, expected_title):
         return self.driver.title == expected_title
 
